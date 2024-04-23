@@ -22,7 +22,7 @@ unless current_branch == 'main'
 end
 
 changes = BH.exec_system 'git diff-index HEAD --'
-if changes
+if changes && !changes.empty?
     puts "Error: Clean up main first.".red
     exit 1
 end
