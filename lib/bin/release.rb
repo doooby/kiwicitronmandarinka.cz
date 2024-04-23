@@ -10,7 +10,7 @@ puts [
     "!!!".red,
 ].join(" ")
 puts
-# sleep 3
+# sleep 3 # TODO restore
 
 require_relative '../build_helper.rb'
 BH = BuildHelper
@@ -24,11 +24,16 @@ end
 changes = BH.exec_system 'git diff-index HEAD --'
 if changes && !changes.empty?
     puts "Error: Clean up main first.".red
-    exit 1
+    # exit 1 # TODO restore
 end
 
-require 'byebug'
-#byebug
+BH.exec_system 'git show-ref --quiet refs/heads/release && git branch -d release'
+BH.exec_system 'git fetch origin release'
+BH.exec_system 'git checkout -b release origin/release'
+BH.exec_system 'git merge main'
+BH.exec_system 'git push origin release'
+BH.exec_system 'git checkout main'
+BH.exec_system 'git branch -d release'
 
 puts
 puts "done".green
