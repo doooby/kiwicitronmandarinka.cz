@@ -2,16 +2,6 @@
 
 require 'colorize'
 
-puts
-puts "kiwicitronmandarinka.cz".green
-puts [
-    "!!!".red,
-    "Release in 3 sec".yellow,
-    "!!!".red,
-].join(" ")
-puts
-# sleep 3 # TODO restore
-
 require_relative '../build_helper.rb'
 BH = BuildHelper
 
@@ -23,9 +13,25 @@ end
 
 changes = BH.exec_system 'git diff-index HEAD --'
 if changes && !changes.empty?
-    puts "Error: Clean up main first.".red
-    # exit 1 # TODO restore
+    if ENV['AUTO_COMMIT'] == '1'
+        BH.exec_system 'git add --all'
+        BH.exec_system 'git commit -m "next-release"'
+    else
+        puts "Error: Clean up main first.".red
+        puts "you can auto-commit by setting AUTO_COMMIT=1"
+        exit 1
+    end
 end
+
+puts
+puts "kiwicitronmandarinka.cz".green
+puts [
+    "!!!".red,
+    "Release in 3 sec".yellow,
+    "!!!".red,
+].join(" ")
+puts
+sleep 3
 
 BH.exec_system 'git show-ref --quiet refs/heads/release && git branch -d release'
 BH.exec_system 'git fetch origin release'
