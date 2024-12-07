@@ -15,31 +15,25 @@ module Pages
         FileUtils.rm 'docs/index.html' if File.exist? 'docs.index.html'
         FileUtils.rm_r 'docs/pages' if Dir.exist? 'docs/pages'
         Pages.read_pages.each do |page|
-            page.body_content = build_page_body page
-            html = build_whole_page page
+            page[:body_content] = Pages::View.render(
+                page.read_page_template,
+                page:
+            )
+            html = Pages::View.render(
+                page.read_layout_template,
+                page:
+            )
             write_page page, html
         end
     end
 
-    def self.build_page_body page
-        source = File.read "src/pages/#{page.page}.html.erb"
-        erb = ERB.new source
-        erb.result page.get_binding
-    end
-
-    def self.build_whole_page page
-        layout_source = File.read "src/layouts/#{page.layout}.html.erb"
-        erb = ERB.new layout_source
-        erb.result page.get_binding
-    end
-
     def self.write_page page, html
-        if page.page == 'index'
+        if page.file == 'index'
             File.write 'docs/index.html', html
         else
-            dir = File.dirname page.page
+            dir = File.dirname page.file
             FileUtils.mkdir_p "docs/pages/#{dir}"
-            File.write "docs/pages/#{page.page}.html", html
+            File.write "docs/pages/#{page.file}.html", html
         end
     end
 

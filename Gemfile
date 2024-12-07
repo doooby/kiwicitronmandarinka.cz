@@ -1,11 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'pathname'
-gem 'fileutils'
+gem 'zeitwerk'
 gem 'colorize'
 
+# gem 'debug'
+
 group :build do
-    gem 'erb'
+    gem 'erubi'
     gem 'listen'
     gem 'webrick'
 end
