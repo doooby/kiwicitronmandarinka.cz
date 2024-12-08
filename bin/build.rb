@@ -5,5 +5,5 @@ app_bundle! :build
 app_load!
 
 puts "... building pages"
-Pages.build_pages
+Pages.build_public
 puts "done".green

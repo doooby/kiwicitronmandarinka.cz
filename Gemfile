@@ -3,10 +3,11 @@ source 'https://rubygems.org'
 gem 'zeitwerk'
 gem 'colorize'
 gem 'ostruct'
+gem 'pathname'
 
 group :build do
+    gem 'fileutils'
     gem 'erubi'
-    gem 'debug'
 end
 
 group :serve do
@@ -14,5 +15,8 @@ group :serve do
     gem 'sinatra'
     gem 'puma'
     gem 'listen'
+end
+
+group :build, :server do
     gem 'debug'
 end

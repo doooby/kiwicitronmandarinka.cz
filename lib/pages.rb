@@ -1,13 +1,11 @@
-require 'fileutils'
-
 module Pages
 
     def self.get_page_path page
-        ROOT_PATH.join('src/pages', "#{page}.html.erb")
+        "src/pages/#{page}.html.erb"
     end
 
     def self.get_layout_path name
-        ROOT_PATH.join('src/layouts', "#{name}.html.erb")
+        "src/layouts/#{name}.html.erb"
     end
 
     def self.get_all_pages
@@ -21,21 +19,19 @@ module Pages
         pages
     end
 
-    def self.build_pages
+    def self.build_public
+        FileUtils.rm_rf 'public'
+        FileUtils.cp_r 'src/public', 'public'
         Pages.get_all_pages.each do |page|
-            write_page page, page.render
+            html = page.render
+            dir = "public/#{File.dirname page.file}"
+            FileUtils.mkdir_p dir
+            file = "public/#{page.file}.html"
+            File.write file, html
         end
     end
 
-    def self.write_page page, html
-        dir = File.dirname page.file
-        dir = ROOT_PATH.join 'docs', dir
-        FileUtils.mkdir_p dir.to_s
-        file = dir.join "#{File.basename page.file}.html"
-        File.write file, html
-    end
-
-    def self.get_page_from_path path
+    def self.get_page_from_url_path path
         path = 'index' if path == ''
         file = Pages.get_page_path path
         Pages::Page.new path if File.exist? file
