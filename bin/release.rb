@@ -33,11 +33,10 @@ puts
 sleep 3
 
 app_sys_exec 'git branch -D release'
-app_sys_exec 'git push origin --delete release'
 app_sys_exec 'git checkout -b release main'
 app_sys_exec 'bin/build.rb'
 app_sys_exec 'git add docs/ && git commit -m "build"'
-# app_sys_exec 'git push origin release'
+app_sys_exec 'git push --force origin release'
 
 puts
 puts "done".green
