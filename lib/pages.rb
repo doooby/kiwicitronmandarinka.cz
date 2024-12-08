@@ -19,18 +19,6 @@ module Pages
         pages
     end
 
-    def self.build_docs
-        FileUtils.rm_rf 'docs'
-        FileUtils.cp_r 'src/public', 'docs'
-        Pages.get_all_pages.each do |page|
-            html = page.render
-            dir = "docs/#{File.dirname page.file}"
-            FileUtils.mkdir_p dir
-            file = "docs/#{page.file}.html"
-            File.write file, html
-        end
-    end
-
     def self.get_page_from_url_path path
         path = 'index' if path == ''
         file = Pages.get_page_path path

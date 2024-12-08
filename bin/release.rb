@@ -14,7 +14,7 @@ changes = app_sys_exec 'git diff-index HEAD --'
 if changes && !changes.empty?
     if ARGV[0] == 'commit'
         app_sys_exec 'git add --all'
-        app_sys_exec 'git commit -m "next-release"'
+        app_sys_exec 'git commit -m "next-release" && git push origin main'
     else
         puts "Error: Clean up / or commit main first.".red
         puts "you can auto-commit by `bin/release commit`"

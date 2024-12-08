@@ -1,7 +1,17 @@
-.article_text_section {
+.article > section {
+  margin-top: 16px;
+}
+
+.article__text_section {
   margin-top: 8px;
 }
 
-.article_text_section > p {
-  margin-left: 16px;
+.article__text_section > p {
+  margin: 0;
+}
+
+.article__text_section > p::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
 }
