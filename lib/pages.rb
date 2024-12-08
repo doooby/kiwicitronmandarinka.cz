@@ -1,6 +1,14 @@
 module Pages
 
-    def self.read_pages
+    def self.get_page_path page
+        ROOT_PATH.join('src/pages', "#{page}.html.erb")
+    end
+
+    def self.get_layout_path name
+        ROOT_PATH.join('src/layouts', "#{name}.html.erb")
+    end
+
+    def self.get_all_pages
         pages = []
         Dir.chdir 'src/pages' do
             Dir.glob '**/*.html.erb' do |relative_path|
@@ -11,32 +19,18 @@ module Pages
         pages
     end
 
-    def self.rebuild_pages
-        FileUtils.rm 'docs/index.html' if File.exist? 'docs.index.html'
-        FileUtils.rm_r 'docs/pages' if Dir.exist? 'docs/pages'
-        Pages.read_pages.each do |page|
-            page[:body_content] = Pages::View.render(
-                page.read_page_template,
-                page:
-            )
-            html = Pages::View.render(
-                page.read_layout_template,
-                page:
-            )
-            write_page page, html
+    def self.build_pages
+        Pages.get_all_pages.each do |page|
+            write_page page, page.render
         end
     end
 
     def self.write_page page, html
-        if page.file == 'index'
-            File.write 'docs/index.html', html
-        else
-            dir = File.dirname page.file
-            FileUtils.mkdir_p "docs/pages/#{dir}"
-            File.write "docs/pages/#{page.file}.html", html
-        end
+        dir = File.dirname page.file
+        dir = ROOT_PATH.join 'docs', dir
+        FileUtils.mkdir_p dir.to_s
+        file = dir.join "#{page.file}.html"
+        File.write file, html
     end
 
 end
-
-require_relative 'pages/page'

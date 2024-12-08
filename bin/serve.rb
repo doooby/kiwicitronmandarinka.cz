@@ -1,26 +1,24 @@
 #!/usr/bin/env ruby
 
 require_relative '../app'
-app_bundle! :build
-lib_loader = app_load! reloading: true
+app_bundle! :build, :serve
+app_load! reload: true
 
-Pages.rebuild_pages
+set :port, 3000
+set :public_folder, ROOT_PATH.join('docs')
 
-Listen
-    .to(ROOT_PATH.join 'lib'){
-        lib_loader.reload
-        Pages.rebuild_pages
-    }
-    .start
+get '/*' do
+    page_name = params['splat'].first
+    page_name = 'index' if page_name == ''
+    path = Pages.get_page_path page_name
 
-Listen
-    .to(ROOT_PATH.join 'src'){ Pages.rebuild_pages }
-    .start
+    if File.exist? path
+        page = Pages::Page.new page_name
+        content_type 'text/html'
+        page.render
+    else
+        pass
+    end
+end
 
-server = WEBrick::HTTPServer.new(
-    Port: 3000,
-    DocumentRoot: ROOT_PATH.join('docs')
-)
-trap('INT'){ server.shutdown }
-server.start
-
+Sinatra::Application.run!

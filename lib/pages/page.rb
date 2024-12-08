@@ -8,14 +8,6 @@ class Pages::Page
         @locals = {}
     end
 
-    def read_page_template
-        File.read "src/pages/#{@file}.html.erb"
-    end
-
-    def read_layout_template
-        File.read "src/layouts/#{@layout_file}.html.erb"
-    end
-
     def [] name
         @locals[name]
     end
@@ -26,6 +18,18 @@ class Pages::Page
 
     def set_layout file
         @layout_file
+    end
+
+    def render
+        body_content = Pages::View.render(
+            File.read(Pages.get_page_path @file),
+            page: self
+        )
+        Pages::View.render(
+            File.read(Pages.get_layout_path @layout_file),
+            page: self,
+            body_content:
+        )
     end
 
 end
