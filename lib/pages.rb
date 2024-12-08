@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Pages
 
     def self.get_page_path page
@@ -29,7 +31,7 @@ module Pages
         dir = File.dirname page.file
         dir = ROOT_PATH.join 'docs', dir
         FileUtils.mkdir_p dir.to_s
-        file = dir.join "#{page.file}.html"
+        file = dir.join "#{File.basename page.file}.html"
         File.write file, html
     end
 

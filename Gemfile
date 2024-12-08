@@ -6,6 +6,7 @@ gem 'ostruct'
 
 group :build do
     gem 'erubi'
+    gem 'debug'
 end
 
 group :serve do
