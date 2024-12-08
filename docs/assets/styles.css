@@ -1,0 +1,7 @@
+.article_text_section {
+  margin-top: 8px;
+}
+
+.article_text_section > p {
+  margin-left: 16px;
+}
