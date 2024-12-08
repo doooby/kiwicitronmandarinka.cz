@@ -8,6 +8,7 @@ puts "... building pages"
 
 FileUtils.rm_rf 'docs'
 FileUtils.cp_r 'src/public', 'docs'
+FileUtils.touch 'docs/.keep'
 Pages.get_all_pages.each do |page|
   html = page.render
   dir = "docs/#{File.dirname page.file}"
