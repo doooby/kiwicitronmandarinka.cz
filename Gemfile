@@ -9,9 +9,9 @@ group :build do
 end
 
 group :serve do
-    gem 'debug'
-    gem 'sinatra'
     gem 'rackup'
+    gem 'sinatra'
     gem 'puma'
     gem 'listen'
+    gem 'debug'
 end

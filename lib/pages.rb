@@ -33,4 +33,10 @@ module Pages
         File.write file, html
     end
 
+    def self.get_page_from_path path
+        path = 'index' if path == ''
+        file = Pages.get_page_path path
+        Pages::Page.new path if File.exist? file
+    end
+
 end
