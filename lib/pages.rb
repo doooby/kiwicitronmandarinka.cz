@@ -19,14 +19,14 @@ module Pages
         pages
     end
 
-    def self.build_public
-        FileUtils.rm_rf 'public'
-        FileUtils.cp_r 'src/public', 'public'
+    def self.build_docs
+        FileUtils.rm_rf 'docs'
+        FileUtils.cp_r 'src/public', 'docs'
         Pages.get_all_pages.each do |page|
             html = page.render
-            dir = "public/#{File.dirname page.file}"
+            dir = "docs/#{File.dirname page.file}"
             FileUtils.mkdir_p dir
-            file = "public/#{page.file}.html"
+            file = "docs/#{page.file}.html"
             File.write file, html
         end
     end
