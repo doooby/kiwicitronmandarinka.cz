@@ -23,6 +23,10 @@ group :storage do
     gem 'concurrent-ruby'
 end
 
+group :build, :storage do
+    gem 'csv'
+end
+
 group :build, :server, :storage do
     gem 'debug'
 end

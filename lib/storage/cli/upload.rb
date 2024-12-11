@@ -2,23 +2,27 @@ module Storage::Cli::Upload
 
   def self.call args
     path = validate_path! args.shift
+    Storage.index
+
     uploader = Uploader.new
     uploader.push_path path
     uploader.await!
-    fails, success = uploader.files.partition{ _1.processing_error }
 
-    puts "successfuly uploaded #{success.length}".green
+    uploaded = uploader.files.select{ _1.upload_state == :up }
+    fails = uploader.files.select{ _1.upload_state == :fail }
+    skip_count = uploader.files.length - uploaded.length - fails.length
 
-    unless success.empty?
+    unless uploaded.empty?
       puts "updating index".blue
+      uploaded.each{ Storage.index.set_file _1 }
+      Storage.index.save!
     end
+
+    puts "files skipped #{skip_count}"
+    puts "successfuly uploaded #{uploaded.length}".green
 
     puts "failed to upload #{fails.length}".red unless fails.empty?
     fails.each{ puts _1.file }
-  end
-
-  def push_dir path, uploader
-
   end
 
   def self.validate_path! path
@@ -57,11 +61,7 @@ module Storage::Cli::Upload
       @pool.post do
         puts "processing #{path}"
         file = Storage::File.new path
-        begin
-          file.upload!
-        rescue => error
-          file.processing_error = error
-        end
+        file.upload!
         @files.push file
       rescue => worker_error
         puts "worker fail: #{worker_error.message.red}"
