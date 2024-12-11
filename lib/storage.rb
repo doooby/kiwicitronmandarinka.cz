@@ -12,5 +12,10 @@ module Storage
     end
   end
 
+  def self.index
+    @index ||= begin
+      raise 'niy'
+    end
+  end
 
 end

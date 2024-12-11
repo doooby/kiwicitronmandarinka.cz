@@ -1,6 +1,15 @@
 class Storage::File
 
-  attr_accessor :file, :mime, :size, :hash, :og_key, :th_key
+  attr_accessor :file, :mime, :size, :hash
+  attr_accessor :processing_error
+
+  def initialize file
+    self.file = file
+  end
+
+  def read!
+    Storage.index[file]
+  end
 
   def upload!
     path = "storage/#{file}"
@@ -9,20 +18,22 @@ class Storage::File
     self.size = File.size path
     self.hash = `md5sum "#{path}"`.split(' ').first
 
-    extension = Storage::File.mime_to_extension mime
-    og_object = Storage.bucket.object "#{file}.og.#{extension}"
+    og_object = Storage.bucket.object get_og_key
     og_object.put body: File.read(path)
-    self.og_key = og_object.key
 
-    th_object = Storage.bucket.object "#{file}.th.png"
+    th_object = Storage.bucket.object get_th_key
     Storage::File.generate_thumb mime, path do |th_file|
       th_object.put body: th_file.read
     end
-    self.th_key = th_object.key
   end
 
-  def get_public_url
-    s3_object.public_url
+  def get_og_key
+    extension = Storage::File.mime_to_extension mime
+    "#{file}.og.#{extension}"
+  end
+
+  def get_th_key
+    "#{file}.th.png"
   end
 
   def self.identify_mime path, extension
@@ -50,7 +61,7 @@ class Storage::File
     file = Tempfile.new
     case mime
     when 'image/jpeg', 'image/png'
-      `convert "#{path}" -resize 300x -format png "#{file.path}"`
+      `magick "#{path}" -resize 300x -format png "#{file.path}"`
     else raise "unknown mime - #{mime}"
     end
     file.rewind

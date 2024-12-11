@@ -20,8 +20,9 @@ end
 group :storage do
     gem 'aws-sdk-s3'
     gem 'ox'
+    gem 'concurrent-ruby'
 end
 
-group :build, :server do
+group :build, :server, :storage do
     gem 'debug'
 end
