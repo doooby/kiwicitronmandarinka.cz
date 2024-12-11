@@ -17,6 +17,11 @@ group :serve do
     gem 'listen'
 end
 
+group :storage do
+    gem 'aws-sdk-s3'
+    gem 'ox'
+end
+
 group :build, :server do
     gem 'debug'
 end
