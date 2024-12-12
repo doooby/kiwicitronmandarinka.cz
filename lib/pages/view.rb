@@ -64,31 +64,18 @@ class Pages::View
       DOC
   end
 
-  def tag__image_in_row url, text=nil
-      <<-DOC
+  def tag__image_in_row path, text=nil
+    th_url, og_path = Storage.asset_urls path
+    <<-DOC
 <div class="col-xm-6 col-md-4 col-xl-2 mb-4 d-flex justify-content-center">
   <div style="max-width: 300px;">
-      <a href="#{url}">
-          <img class="img-fluid" src="#{url}">
-      </a>
-      #{"<small>#{text}</small>" if text}
+    <a href="#{og_path}">
+      <img class="img-fluid" src="#{th_url}">
+    </a>
+    #{"<small>#{text}</small>" if text}
   </div>
 </div>
-      DOC
-  end
-
-  def tag__image_in_row_2 path, text=nil
-    th_url, _ = Storage.asset_urls path
-    <<-DOC
-    <div class="col-xm-6 col-md-4 col-xl-2 mb-4 d-flex justify-content-center">
-      <div style="max-width: 300px;">
-          <a href="#{th_url}">
-              <img class="img-fluid" src="#{th_url}">
-          </a>
-          #{"<small>#{text}</small>" if text}
-      </div>
-    </div>
-          DOC
+    DOC
   end
 
 end

@@ -35,11 +35,9 @@ class Storage::File
     self.mime = Storage::File.identify_mime path, File.extname(path)
     self.size = File.size path
 
-    puts "uploading #{file}".blue
     og_object = Storage.bucket.object get_og_key
     og_object.put body: File.read(path)
 
-    puts "uploading th #{file}".blue
     th_object = Storage.bucket.object get_th_key
     Storage::File.generate_thumb mime, path do |th_file|
       th_object.put body: th_file.read
@@ -71,7 +69,7 @@ class Storage::File
 
   def self.identify_mime path, extension
     case extension
-    when '.jpg', '.png' then
+    when '.jpg', '.jpeg', '.png' then
       simple = `identify -format "%m" "#{path}"`.strip
       case simple
       when 'JPEG' then 'image/jpeg'
