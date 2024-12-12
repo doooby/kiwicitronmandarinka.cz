@@ -17,6 +17,16 @@ group :serve do
     gem 'listen'
 end
 
-group :build, :server do
+group :storage do
+    gem 'aws-sdk-s3'
+    gem 'ox'
+    gem 'concurrent-ruby'
+end
+
+group :build, :storage do
+    gem 'csv'
+end
+
+group :build, :server, :storage do
     gem 'debug'
 end

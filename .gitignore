@@ -1,1 +1,5 @@
+.secrets
 dev_log.txt
+
+storage/*
+!storage/index.csv
