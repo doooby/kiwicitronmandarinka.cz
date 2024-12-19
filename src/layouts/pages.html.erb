@@ -10,7 +10,7 @@
     <script type="module" src="/assets/setup.js"></script>
     <script type="module" src="/assets/ui.js" defer></script>
 </head>
-<body>
+<body data-controller="gallery">
 
 <%= @body_content %>
 
@@ -21,6 +21,40 @@
         </div>
     </div>
 </footer>
+
+<div class="d-none gallery-container">
+    <div class="h-100 d-flex align-items-center justify-content-center gallery-container--item-container"
+        data-gallery-target="itemContainer"
+    ></div>
+    <div class="position-absolute"
+        style="top: 20px; right: 20px;"
+    >
+        <div class="gallery-container--box_floating gallery-container--btn"
+            data-action="click->gallery#close"
+        >&#x00D7;</div>
+    </div>
+    <div class="position-absolute w-100 d-flex justify-content-center"
+        style="bottom: 20px;"
+    >
+        <div class="gallery-container--box_floating"
+            data-gallery-target="itemCaption"
+        ></div>
+    </div>
+    <div class="position-absolute"
+        style="top: calc(50vh - 30px); right: 20px;"
+    >
+        <div class="gallery-container--box_floating gallery-container--btn"
+            data-action="click->gallery#next"
+        >&#x203A;</div>
+    </div>
+    <div class="position-absolute"
+        style="top: calc(50vh - 30px); left: 20px;"
+    >
+        <div class="gallery-container--box_floating gallery-container--btn"
+            data-action="click->gallery#previous"
+        >&#x2039;</div>
+    </div>
+</div>
 
 </body>
 </html>
