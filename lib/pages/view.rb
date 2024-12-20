@@ -64,7 +64,7 @@ class Pages::View
       DOC
   end
 
-  def tag__image_in_row path, text=nil
+  def tag_gallery_item path, text=nil
     th_url, og_path = Storage.asset_urls path
     <<-DOC
 <div class="col-xm-6 col-md-4 col-xl-2 mb-4 d-flex justify-content-center">

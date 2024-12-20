@@ -13,7 +13,7 @@
             { img: 'garston-hops/20241016_175138.jpg', text: 'Ale teď už zase musíme vše nacpat do vločky.' },
             { img: 'garston-hops/20241016_193058.jpg', text: '... a vzhůru za dalším dobrodružstvím!' },
         ].each do |item| %>
-            <%= tag__image_in_row item[:img], item[:text] %>
+            <%= tag_gallery_item item[:img], item[:text] %>
         <% end %>
     </section>
     <%= tag__article__text_section className: 'mt-3' do %>
