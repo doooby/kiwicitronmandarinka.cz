@@ -64,13 +64,14 @@ class Pages::View
       DOC
   end
 
-  def tag_gallery_item path, text=nil
-    th_url, og_path = Storage.asset_urls path
+  def tag__gallery_item path, text=nil
+    type, th_url, og_path = Storage.asset_urls path
     <<-DOC
 <div class="col-xm-6 col-md-4 col-xl-2 mb-4 d-flex justify-content-center">
   <div class="gallery-item"
     style="max-width: 300px;"
     data-gallery-item
+    data-type="#{type}"
     data-url="#{og_path}"
   >
     <img class="img-fluid"

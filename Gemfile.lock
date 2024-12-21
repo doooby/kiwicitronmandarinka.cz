@@ -25,6 +25,7 @@ GEM
     debug (1.9.2)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    digest (3.1.1)
     erubi (1.13.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm-linux-gnu)
@@ -95,6 +96,7 @@ DEPENDENCIES
   concurrent-ruby
   csv
   debug
+  digest
   erubi
   fileutils
   listen

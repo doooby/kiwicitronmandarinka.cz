@@ -24,13 +24,18 @@ module Storage
     file = index.get_file path
     if file
       [
-        "#{Storage::S3_BASE_URL}#{file.get_th_key}",
-        "#{Storage::S3_BASE_URL}#{file.get_og_key}"
+        File.mime_to_asset_type(file.mime),
+        "#{S3_BASE_URL}#{file.get_th_key}",
+        "#{S3_BASE_URL}#{file.get_og_key}"
       ]
     else
+      file_path = "storage/#{path}"
+      mime = File.identify_mime file_path, ::File.extname(file_path)
+      url = "/#{file_path}"
       [
-        "/storage/#{path}",
-        "/storage/#{path}"
+        File.mime_to_asset_type(mime),
+        "#{url}?th=1",
+        url
       ]
     end
   end
