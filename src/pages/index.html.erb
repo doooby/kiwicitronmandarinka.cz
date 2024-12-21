@@ -12,7 +12,7 @@
                 Když jsem se stěhoval naposledny, prohlašoval sem, že se už nikdy nechci stěhovat, že příště radši zapálím celý byt. Už tehdy jsem pomýšlel na to, že zvednu kotvy a vypluju někam do světa - Brno pro mě měl být jen dočasný přístav. Kotvil jsem v něm 5 let a poznal tam Páju a místo do Kanady mám(e) letenku na Zéland. A najednou vyklízím byt, ve kterém jsem nahromadil další kraviny i užitečné věci, nábytek plus jednou tolik Pájiných věci. Uf. Ale - my letíme na Zéland!
             </p>
             <div class="row">
-                <%= tag__image_in_row 'homepage/minimalism.jpeg' %>
+                <%= tag__gallery_item 'homepage/minimalism.jpeg' %>
             </div>
         <% end %>
 
@@ -25,8 +25,8 @@
                 letíme na druhý konec plochozemě.
             </p>
             <div class="row">
-                <%= tag__image_in_row 'homepage/flat-earth-map.png' %>
-                <%= tag__image_in_row 'homepage/prilet_my_dva.jpeg' %>
+                <%= tag__gallery_item 'homepage/flat-earth-map.png' %>
+                <%= tag__gallery_item 'homepage/prilet_my_dva.jpeg' %>
             </div>
         <% end %>
 
@@ -47,6 +47,16 @@
         ) do %>
             <p>
                 Češi museli na druhý konec světa, aby viděli, jak se pěstuje chmel 🤷‍♂️.
+            </p>
+        <% end %>
+
+        <%= tag__index_item(
+            date: '18/12/2024, Southern Alps',
+            url: '/posts/241218-southern-alps',
+            title: 'Jižní Alpy',
+        ) do %>
+            <p>
+                Závěr dovolené byl intenzivní. Přátelé 🧑‍🤝‍🧑, hory 🏔️, léto ☀️.
             </p>
         <% end %>
 

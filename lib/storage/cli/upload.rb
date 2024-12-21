@@ -38,15 +38,20 @@ module Storage::Cli::Upload
     def initialize pool_size = 8
       @pool = Concurrent::FixedThreadPool.new pool_size
       @files = Concurrent::Array.new
+      @chdir_mutex = Mutex.new
     end
 
     def push_path path
       # TODO optimize this bro
-      is_file, listing = Dir.chdir 'storage' do
-        next [ true ] if File.file? path
-        if File.directory? path
-          glob_path = path.end_with?('/') ? "#{path}*" : "#{path}/*"
-          next [ false, Dir.glob(glob_path) ]
+      is_file = nil
+      listing = nil
+      @chdir_mutex.synchronize do
+        is_file, listing = Dir.chdir 'storage' do
+          next [ true ] if File.file? path
+          if File.directory? path
+            glob_path = path.end_with?('/') ? "#{path}*" : "#{path}/*"
+            next [ false, Dir.glob(glob_path) ]
+          end
         end
       end
 

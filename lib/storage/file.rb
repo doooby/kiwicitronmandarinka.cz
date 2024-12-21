@@ -60,22 +60,17 @@ class Storage::File
     "#{file}.th.png"
   end
 
-  def is_img?
+  def self.mime_to_asset_type mime
     case mime
-    when 'image/jpeg', 'image/png' then true
-    else false
+    when 'image/jpeg', 'image/png' then 'image'
+    when 'video/mp4' then 'video'
     end
   end
 
   def self.identify_mime path, extension
     case extension
-    when '.jpg', '.jpeg', '.png' then
-      simple = `identify -format "%m" "#{path}"`.strip
-      case simple
-      when 'JPEG' then 'image/jpeg'
-      when 'PNG' then 'image/png'
-      else raise "unknown sipmple mime - #{simple}"
-      end
+    when '.jpg', '.mp4' then
+      `file --mime-type -b #{path}`.strip
     else raise "unknown file extension - #{path}"
     end
   end
@@ -84,6 +79,7 @@ class Storage::File
     case mime
     when 'image/jpeg' then 'jpeg'
     when 'image/png' then 'png'
+    when 'video/mp4' then 'mp4'
     else raise "unknown mime - #{mime}"
     end
   end
@@ -93,7 +89,12 @@ class Storage::File
     case mime
     when 'image/jpeg', 'image/png'
       `magick "#{path}" -resize 300x -format png "#{file.path}"`
+    when 'video/mp4'
+      IO.popen "ffmpeg -i #{path} -ss 00:00:01 -vframes 1 -c:v png -f image2pipe -", 'rb' do |io|
+        file.write io.read
+      end
     else raise "unknown mime - #{mime}"
+      #
     end
     file.rewind
     yield file

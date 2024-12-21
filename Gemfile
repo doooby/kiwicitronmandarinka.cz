@@ -15,6 +15,7 @@ group :serve do
     gem 'sinatra'
     gem 'puma'
     gem 'listen'
+    gem 'digest'
 end
 
 group :storage do

@@ -35,6 +35,11 @@
   object-fit: contain;
 }
 
+.gallery-container--item-container > video {
+  width: calc(100vw - 60px);
+  height: calc(100vh - 60px);
+}
+
 .gallery-container--box_floating {
   padding: 20px;
   background: rgba(0, 0, 0, 0.65);

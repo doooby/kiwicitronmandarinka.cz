@@ -66,13 +66,29 @@ class GalleryItem {
 
   constructor (node) {
     this.url = node.dataset.url
+    this.type = node.dataset.type
     this.caption = node.querySelector('[data-gallery-item--caption]')?.textContent
   }
 
   show (gallery) {
-    const img = document.createElement('img')
-    img.src = this.url
-    gallery.itemContainerTarget.appendChild(img)
+    switch (this.type) {
+      case 'image':
+        const img = document.createElement('img')
+        img.src = this.url
+        gallery.itemContainerTarget.appendChild(img)
+        break
+      case 'video':
+        const video = document.createElement('video')
+        video.setAttribute('controls', '')
+        const source = document.createElement('source')
+        source.setAttribute('src', this.url)
+        source.setAttribute('type', 'video/mp4')
+        video.textContent = 'Your browser does not support the video tag.'
+        video.appendChild(source)
+        gallery.itemContainerTarget.appendChild(video)
+        break
+    }
+
     gallery.itemCaptionTarget.textContent = this.caption
   }
 }
